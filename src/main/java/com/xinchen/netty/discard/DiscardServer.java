@@ -18,6 +18,10 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 /**
  * 丢弃任何传入的数据
  *
+ * 这里采用输出接收到的信息
+ * telnet localhost 8009
+ * 回车后输入消息即可，ctrl + ] 即可退出
+ *
  * @author xinchen
  * @version 1.0
  * @date 07/08/2019 14:52
