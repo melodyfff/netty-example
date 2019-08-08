@@ -21,7 +21,7 @@ import io.netty.handler.logging.LoggingHandler;
  * @version 1.0
  * @date 08/08/2019 14:02
  */
-public class TImeServer {
+public class TimeServer {
     static final int PORT = Integer.parseInt(System.getProperty("port", "8006"));
 
     public static void main(String[] args) throws Exception {
@@ -38,7 +38,7 @@ public class TImeServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             // 添加自定义时间服务处理
-                            pipeline.addLast(new TimeServerHandler());
+                            pipeline.addLast(new TimeEncoder(),new TimeServerHandler());
                         }
                     });
 

@@ -9,6 +9,9 @@ import io.netty.handler.codec.ReplayingDecoder;
 import java.util.List;
 
 /**
+ *
+ *
+ *
  * 用于解决碎片问题
  * <p>
  * 解决方案二： 装饰器
@@ -37,7 +40,7 @@ import java.util.List;
  * @version 1.0
  * @date 08/08/2019 15:21
  */
-public class TImeDecoder extends ByteToMessageDecoder {
+public class TimeDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -47,10 +50,8 @@ public class TImeDecoder extends ByteToMessageDecoder {
             return;
         }
 
-
-        // 如果decode()向out中添加数据，意味着成功解码了数据
-        // ByteToMessageDecoder将丢弃累积缓冲区的读取部分
-        // ByteToMessageDecoder将继续调用该decode()方法，直到它不添加任何内容out
-        out.add(in.readBytes(4));
+        out.add(new UnixTIme(in.readUnsignedInt()));
     }
+
+
 }

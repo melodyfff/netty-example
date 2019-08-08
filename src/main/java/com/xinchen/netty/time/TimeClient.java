@@ -19,7 +19,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @version 1.0
  * @date 08/08/2019 14:20
  */
-public class TImeClient {
+public class TimeClient {
     static final String HOST = System.getProperty("host", "127.0.0.1");
     static final int PORT = Integer.parseInt(System.getProperty("port", "8006"));
 
@@ -33,7 +33,7 @@ public class TImeClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new TimeClientHandler());
+                            ch.pipeline().addLast(new TimeDecoder(),new TimeClientHandler());
                         }
                     });
             // 开启服务
