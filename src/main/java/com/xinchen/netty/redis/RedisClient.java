@@ -66,7 +66,7 @@ public class RedisClient {
 
     static void readCommands(Channel channel) throws IOException, InterruptedException {
         System.out.println("Enter Redis commands (quit to end)");
-        ChannelFuture lastWriteFuture;
+        ChannelFuture lastWriteFuture = null;
 
         // get stdin
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -95,9 +95,11 @@ public class RedisClient {
                 }
             });
 
+        }
+
+        if (null!= lastWriteFuture){
             // 等待到所有消息发送完毕后关闭channel
             lastWriteFuture.sync();
-
         }
     }
 }
