@@ -1,19 +1,24 @@
 package com.xinchen.netty.uptime;
 
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  *
  * 保持连接到服务器，同时打印出当前正常运行的时间
  *
+ * {@link Sharable} 因为有重新尝试连接，会有重新added和removed的操作
  *
  * @author xinchen
  * @version 1.0
  * @date 08/08/2019 16:52
  */
+@Sharable
 public class UptimeClientHandler extends SimpleChannelInboundHandler<Object> {
 
     long startTIme = -1;
@@ -34,6 +39,7 @@ public class UptimeClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        // IdleStateEvent事件在UptimeClient里面pipeline添加时增加了IdleStateHandler
         if (!(evt instanceof IdleStateEvent)){
             return;
         }
@@ -54,7 +60,20 @@ public class UptimeClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        // sleep
         println("Sleeping for: "+ UptimeClient.RECONNECT_DELAY + 's');
+
+        ctx.channel().eventLoop().schedule(new Runnable() {
+            @Override
+            public void run() {
+                println("Reconnection to "+ UptimeClient.HOST + ":" +UptimeClient.PORT);
+
+                // 尝试重新连接
+                UptimeClient.connect();
+
+            }
+        },UptimeClient.RECONNECT_DELAY, TimeUnit.SECONDS);
+
     }
 
     @Override
