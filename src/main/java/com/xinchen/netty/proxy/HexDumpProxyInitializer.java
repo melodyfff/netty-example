@@ -23,6 +23,6 @@ public class HexDumpProxyInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO))
-                .addLast(new HexDumpProxyInitializer(remoteHost, port));
+                .addLast(new HexDumpProxyFrontendHandler(remoteHost, port));
     }
 }
