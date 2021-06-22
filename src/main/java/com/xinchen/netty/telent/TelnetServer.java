@@ -12,6 +12,8 @@ import io.netty.handler.ssl.SslContext;
 /**
  * Simplistic telnet server.
  *
+ * 可以用 NetAssistant工具连接
+ *
  * @author xinchen
  * @version 1.0
  * @date 09/08/2019 16:38
